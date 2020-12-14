@@ -7,20 +7,20 @@ import (
 	"judaro13/miaguila/utils"
 	"net/http"
 	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
+// List all stored postcodes
 func List(write http.ResponseWriter, request *http.Request) {
 
-	page := mux.Vars(request)["page"]
-	i, err := strconv.Atoi(page)
+	query := request.URL.Query()
+
+	page, err := strconv.Atoi(query.Get("page"))
 	if err != nil {
-		i = 0
+		page = 0
 	}
 
 	fmt.Printf("\n %#v ", page)
 	context := request.Context().Value("ctx").(*models.AppContext)
-	result := store.ListPostcode(context.DB, i)
+	result := store.ListPostcode(context.DB, page)
 	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk, Message: result})
 }

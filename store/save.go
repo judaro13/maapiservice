@@ -2,11 +2,12 @@ package store
 
 import (
 	"judaro13/miaguila/models"
+	"judaro13/miaguila/utils"
 
 	"gorm.io/gorm"
 )
 
-// SaveUKAPIResponse
+// SaveUKAPIResponse save data from UKAPI
 func SaveUKAPIResponse(db *gorm.DB, data models.UKAPIPOSTResult, reference string) {
 	coordinates := []GeoCoordinate{}
 	for _, results := range data.Result {
@@ -27,7 +28,11 @@ func updateStatus(db *gorm.DB, reference string) {
 	if progress.Counts >= progress.Bulks {
 		progress.Status = "done"
 	}
-	db.Save(&progress)
+
+	result := db.Save(&progress)
+	if result.Error != nil {
+		utils.Error(result.Error)
+	}
 }
 
 // SaveNewBulkAction storing progress

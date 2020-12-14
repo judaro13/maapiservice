@@ -19,7 +19,7 @@ type CSVUpload struct {
 	ID        uint `gorm:"primaryKey"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Records   int
+	Records   int `json:"-"`
 	Bulks     int
 	Counts    int
 	Status    string

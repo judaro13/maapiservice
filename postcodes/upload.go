@@ -31,5 +31,5 @@ func UploadCVS(write http.ResponseWriter, request *http.Request) {
 
 	go storeData(context.DB, results, reference)
 	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk,
-		Message: "Processing data, Chech status with refernce " + reference})
+		Message: "Processing data, Chech status with GET /postcodes/" + reference})
 }
