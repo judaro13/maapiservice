@@ -1,5 +1,7 @@
 package models
 
+import "github.com/jinzhu/gorm"
+
 const (
 	//StatusOk status
 	StatusOk = "OK"
@@ -11,4 +13,9 @@ const (
 type JSONResponse struct {
 	Code    string
 	Message interface{}
+}
+
+//AppContext application context struct
+type AppContext struct {
+	DB *gorm.DB
 }

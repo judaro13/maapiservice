@@ -1,12 +1,13 @@
-package routers
+package router
 
 import (
 	"encoding/json"
 	"fmt"
+	"judaro13/miaguila/handlers"
+	"judaro13/miaguila/models"
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/judaro13/miaguila/handlers"
 	"github.com/urfave/negroni"
 )
 
@@ -53,7 +54,7 @@ func routes() []Route {
 		Route{
 			path: "/",
 			function: func(w http.ResponseWriter, r *http.Request) {
-				json.NewEncoder(w).Encode(models.JSONResponse{Code: "0", Message: "API Service active v1.0.1", Data: nil})
+				json.NewEncoder(w).Encode(models.JSONResponse{Code: "0", Message: "API Service active v1.0.1"})
 			},
 			methods: []string{"GET"},
 		},
