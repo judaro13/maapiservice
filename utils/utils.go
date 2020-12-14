@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"judaro13/miaguila/models"
+	"judaro13/miaguila/apiservice/models"
 	"log"
 	"net/http"
 	"os"

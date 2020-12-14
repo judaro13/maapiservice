@@ -3,9 +3,9 @@ package postcodes
 import (
 	"encoding/csv"
 	"io"
-	"judaro13/miaguila/models"
-	"judaro13/miaguila/store"
-	"judaro13/miaguila/utils"
+	"judaro13/miaguila/apiservice/models"
+	"judaro13/miaguila/apiservice/store"
+	"judaro13/miaguila/apiservice/utils"
 	"net/http"
 )
 
@@ -29,7 +29,7 @@ func UploadCVS(write http.ResponseWriter, request *http.Request) {
 
 	go store.SaveNewBulkAction(context.DB, reference, len(results))
 
-	go storeData(context.DB, results, reference)
+	go storeData(context, results, reference)
 	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk,
 		Message: "Processing data, Chech status with GET /postcodes/" + reference})
 }

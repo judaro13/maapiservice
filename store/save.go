@@ -1,8 +1,8 @@
 package store
 
 import (
-	"judaro13/miaguila/models"
-	"judaro13/miaguila/utils"
+	"judaro13/miaguila/apiservice/models"
+	"judaro13/miaguila/apiservice/utils"
 
 	"gorm.io/gorm"
 )

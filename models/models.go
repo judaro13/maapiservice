@@ -1,6 +1,9 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"github.com/streadway/amqp"
+	"gorm.io/gorm"
+)
 
 const (
 	//StatusOk status
@@ -17,5 +20,11 @@ type JSONResponse struct {
 
 //AppContext application context struct
 type AppContext struct {
-	DB *gorm.DB
+	DB     *gorm.DB
+	Rabbit *amqp.Connection
+}
+
+type QueryCoordinatesMessage struct {
+	Reference   string     `json:"reference`
+	Coordinates [][]string `json:"coordinates`
 }

@@ -2,9 +2,9 @@ package postcodes
 
 import (
 	"fmt"
-	"judaro13/miaguila/models"
-	"judaro13/miaguila/store"
-	"judaro13/miaguila/utils"
+	"judaro13/miaguila/apiservice/models"
+	"judaro13/miaguila/apiservice/store"
+	"judaro13/miaguila/apiservice/utils"
 	"net/http"
 	"strconv"
 )

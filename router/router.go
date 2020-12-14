@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"judaro13/miaguila/models"
-	"judaro13/miaguila/postcodes"
+	"judaro13/miaguila/apiservice/models"
+	"judaro13/miaguila/apiservice/postcodes"
 	"net/http"
 
 	"github.com/gorilla/mux"
