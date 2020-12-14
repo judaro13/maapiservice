@@ -4,9 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"judaro13/miaguila/apiservice/models"
 	"judaro13/miaguila/apiservice/postcodes"
 	"net/http"
+
+	"judaro13/miaguila/apiservice/models"
 
 	"github.com/gorilla/mux"
 	"github.com/urfave/negroni"

@@ -5,18 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"judaro13/miaguila/apiservice/models"
-	"log"
 	"net/http"
-	"os"
 	"regexp"
-	"runtime"
 )
-
-// Err var to add Err message to log
-var Err = log.New(os.Stderr,
-	"ERROR: ",
-	log.Ldate|log.Ltime)
 
 // JSONResponse func to standireze a json response with status OK
 func JSONResponse(w http.ResponseWriter, response interface{}) {
@@ -42,23 +33,6 @@ func JSONResponseWithStatus(w http.ResponseWriter, response interface{}, status 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	w.Write(json)
-}
-
-// JSONResponseErrors func to standarize API error response
-func JSONResponseErrors(err error) models.JSONResponse {
-	response := models.JSONResponse{
-		Code:    models.StatusErrors,
-		Message: err.Error(),
-	}
-	return response
-}
-
-// Error func for print errors
-func Error(err error) {
-	pc, fn, line, _ := runtime.Caller(1)
-	if err != nil {
-		Err.Printf("optiapi - in %s[%s:%d] %v", runtime.FuncForPC(pc).Name(), fn, line, err)
-	}
 }
 
 // NewUUID generates a random UUID according to RFC 4122, code taked from  https://play.golang.org/p/4FkNSiUDMg

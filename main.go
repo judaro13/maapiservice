@@ -3,12 +3,13 @@ package main
 import (
 	"errors"
 	"fmt"
-	"judaro13/miaguila/apiservice/models"
 	"judaro13/miaguila/apiservice/router"
 	"judaro13/miaguila/apiservice/store"
 	"net/http"
 	"os"
 	"time"
+
+	"judaro13/miaguila/apiservice/models"
 
 	"github.com/streadway/amqp"
 )
@@ -19,6 +20,7 @@ func main() {
 	db := store.ConnectToDB()
 
 	conn, err := amqp.Dial(os.Getenv("RABBIT_URL"))
+	defer conn.Close()
 	if err != nil {
 		panic(err)
 	}

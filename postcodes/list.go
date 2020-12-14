@@ -1,12 +1,12 @@
 package postcodes
 
 import (
-	"fmt"
-	"judaro13/miaguila/apiservice/models"
 	"judaro13/miaguila/apiservice/store"
 	"judaro13/miaguila/apiservice/utils"
 	"net/http"
 	"strconv"
+
+	"judaro13/miaguila/apiservice/models"
 )
 
 // List all stored postcodes
@@ -19,7 +19,6 @@ func List(write http.ResponseWriter, request *http.Request) {
 		page = 0
 	}
 
-	fmt.Printf("\n %#v ", page)
 	context := request.Context().Value("ctx").(*models.AppContext)
 	result := store.ListPostcode(context.DB, page)
 	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk, Message: result})

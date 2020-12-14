@@ -23,8 +23,3 @@ type AppContext struct {
 	DB     *gorm.DB
 	Rabbit *amqp.Connection
 }
-
-type QueryCoordinatesMessage struct {
-	Reference   string     `json:"reference`
-	Coordinates [][]string `json:"coordinates`
-}

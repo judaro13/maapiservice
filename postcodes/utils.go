@@ -2,9 +2,13 @@ package postcodes
 
 import (
 	"encoding/json"
-	"judaro13/miaguila/apiservice/models"
-	"judaro13/miaguila/apiservice/utils"
 	"os"
+
+	"github.com/judaro13/masharedmodels/utils"
+
+	"judaro13/miaguila/apiservice/models"
+
+	smodels "github.com/judaro13/masharedmodels/models"
 
 	"github.com/streadway/amqp"
 )
@@ -18,7 +22,7 @@ func storeData(context *models.AppContext, coords [][]string, reference string) 
 
 func sendDataToProcess(rabbit *amqp.Connection, coords [][]string, reference string) {
 
-	data := models.QueryCoordinatesMessage{Reference: reference, Coordinates: coords}
+	data := smodels.QueryCoordinatesMessage{Reference: reference, Coordinates: coords}
 	body, err := json.Marshal(data)
 	if err != nil {
 		utils.Error(err)
@@ -26,21 +30,12 @@ func sendDataToProcess(rabbit *amqp.Connection, coords [][]string, reference str
 	}
 
 	ch, err := rabbit.Channel()
-	q, err := ch.QueueDeclare(
-		os.Getenv("RABBIT_PROCESS_DATA_QUEUE"), // name
-		false,
-		false,
-		false,
-		false,
-		nil,
-	)
+	defer ch.Close()
+
+	q, err := ch.QueueDeclare(os.Getenv("RABBIT_PROCESS_DATA_QUEUE"), false, false, false, false, nil)
 	utils.Error(err)
 
-	err = ch.Publish(
-		"",
-		q.Name,
-		false,
-		false,
+	err = ch.Publish("", q.Name, false, false,
 		amqp.Publishing{
 			ContentType: "text/plain",
 			Body:        body,
@@ -65,81 +60,3 @@ func splitInChuncks(slice [][]string) [][][]string {
 	}
 	return chunks
 }
-
-// func queryBulkData(db *gorm.DB, coords [][]string, reference string) {
-// 	query := stringCoordsToQueryStruct(coords)
-
-// 	body, err := json.Marshal(query)
-// 	if err != nil {
-// 		utils.Error(err)
-// 		return
-// 	}
-
-// 	APIUrl := "https://api.postcodes.io/postcodes"
-
-// 	var bodyResp []byte
-// 	var result models.UKAPIPOSTResult
-
-// 	err = retry.Do(
-// 		func() error {
-// 			bodyIO := bytes.NewBuffer(body)
-// 			client := http.Client{Timeout: 10 * time.Second}
-// 			resp, err := client.Post(APIUrl, "application/json", bodyIO)
-// 			if err != nil {
-// 				return err
-// 			}
-
-// 			if resp.StatusCode != http.StatusOK {
-// 				err := errors.New(string(body))
-// 				return err
-// 			}
-
-// 			defer resp.Body.Close()
-// 			bodyResp, err = ioutil.ReadAll(resp.Body)
-// 			if err != nil {
-// 				return err
-// 			}
-
-// 			err = json.Unmarshal(bodyResp, &result)
-// 			if err != nil {
-// 				utils.Error(err)
-// 				return err
-// 			}
-
-// 			if result.Status == 200 && len(result.Result) == 0 {
-// 				return errors.New("no results")
-// 			}
-// 			return nil
-// 		},
-// 		retry.Attempts(5),
-// 		retry.Delay(5*time.Second),
-// 	)
-
-// 	if err != nil {
-// 		utils.Error(err)
-// 		return
-// 	}
-
-// 	store.SaveUKAPIResponse(db, result, reference)
-// }
-
-// func stringCoordsToQueryStruct(coords [][]string) models.UKAPIBulkQuery {
-// 	geolocs := []models.UKAPICoordinate{}
-
-// 	for _, values := range coords {
-// 		if len(values) != 2 {
-// 			continue
-// 		}
-// 		lat, err := strconv.ParseFloat(values[0], 64)
-// 		if err != nil {
-// 			continue
-// 		}
-// 		lon, err := strconv.ParseFloat(values[1], 64)
-// 		if err != nil {
-// 			continue
-// 		}
-// 		geolocs = append(geolocs, models.UKAPICoordinate{Longitude: lon, Latitude: lat, Radius: 50, Limit: 1})
-// 	}
-
-// 	return models.UKAPIBulkQuery{geolocs}
-// }

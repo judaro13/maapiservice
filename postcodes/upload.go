@@ -3,10 +3,11 @@ package postcodes
 import (
 	"encoding/csv"
 	"io"
-	"judaro13/miaguila/apiservice/models"
 	"judaro13/miaguila/apiservice/store"
 	"judaro13/miaguila/apiservice/utils"
 	"net/http"
+
+	"judaro13/miaguila/apiservice/models"
 )
 
 // UploadCVS func to load csv data
@@ -25,11 +26,14 @@ func UploadCVS(write http.ResponseWriter, request *http.Request) {
 	context := request.Context().Value("ctx").(*models.AppContext)
 
 	reference, err := utils.NewUUID()
-	utils.Error(err)
+	if err != nil {
+		utils.JSONResponse(write, models.JSONResponse{Code: models.StatusErrors,
+			Message: err.Error()})
+		return
+	}
 
 	go store.SaveNewBulkAction(context.DB, reference, len(results))
 
-	go storeData(context, results, reference)
 	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk,
 		Message: "Processing data, Chech status with GET /postcodes/" + reference})
 }
