@@ -27,4 +27,5 @@ func ConnectToDB() *gorm.DB {
 
 func automigrations(db *gorm.DB) {
 	db.AutoMigrate(&GeoCoordinate{})
+	db.AutoMigrate(&CSVUpload{})
 }

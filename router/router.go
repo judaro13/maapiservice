@@ -49,7 +49,7 @@ func NewRouter(ctx *models.AppContext) *mux.Router {
 			negroni.Wrap(route.function),
 		)
 		methods := append(route.methods, "OPTIONS")
-		router.Methods(methods...).Queries("page", "{page}").Path(route.path).Name(route.name).Handler(handler)
+		router.Methods(methods...).Path(route.path).Name(route.name).Handler(handler)
 		fmt.Printf("Setting methods %v for route %s\n", methods, route.path)
 	}
 
@@ -75,6 +75,11 @@ func routes() []Route {
 		Route{
 			path:     "/postcodes",
 			function: postcodes.List,
+			methods:  []string{"GET"},
+		},
+		Route{
+			path:     "/postcodes/{reference:.+}",
+			function: postcodes.BulkStatus,
 			methods:  []string{"GET"},
 		},
 	}

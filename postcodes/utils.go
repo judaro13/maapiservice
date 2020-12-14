@@ -16,10 +16,10 @@ import (
 	"gorm.io/gorm"
 )
 
-func queryData(db *gorm.DB, coords [][]string) {
+func storeData(db *gorm.DB, coords [][]string, reference string) {
 	chunks := splitInChuncks(coords)
 	for _, chunk := range chunks {
-		queryBulkData(db, chunk)
+		queryBulkData(db, chunk, reference)
 	}
 }
 
@@ -40,7 +40,7 @@ func splitInChuncks(slice [][]string) [][][]string {
 	return chunks
 }
 
-func queryBulkData(db *gorm.DB, coords [][]string) {
+func queryBulkData(db *gorm.DB, coords [][]string, reference string) {
 	query := stringCoordsToQueryStruct(coords)
 
 	body, err := json.Marshal(query)
@@ -94,7 +94,7 @@ func queryBulkData(db *gorm.DB, coords [][]string) {
 		return
 	}
 
-	store.SaveUKAPIResponse(db, result)
+	store.SaveUKAPIResponse(db, result, reference)
 }
 
 func stringCoordsToQueryStruct(coords [][]string) models.UKAPIBulkQuery {

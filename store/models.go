@@ -6,10 +6,22 @@ import (
 
 // GeoCoordinate db struct
 type GeoCoordinate struct {
-	ID        uint `gorm:"autoIncrement:true,index"`
+	ID        uint `gorm:"autoIncrement:true;index"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Lat       float64 `gorm:"not null" json:"lat"`
-	Lon       float64 `gorm:"not null" json:"lon"`
+	Lat       float64 `gorm:"" json:"lat"`
+	Lon       float64 `gorm:"" json:"lon"`
 	Postcode  string  `json:"postcode"`
+}
+
+// CSVUpload struct to handle progress
+type CSVUpload struct {
+	ID        uint `gorm:"primaryKey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Records   int
+	Bulks     int
+	Counts    int
+	Status    string
+	Reference string
 }
