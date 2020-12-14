@@ -2,12 +2,11 @@ package utils
 
 import (
 	"encoding/json"
+	"judaro13/miaguila/models"
 	"log"
 	"net/http"
 	"os"
 	"runtime"
-
-	"github.com/judaro13/miaguila/models"
 )
 
 // Err var to add Err message to log

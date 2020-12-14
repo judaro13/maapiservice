@@ -54,13 +54,13 @@ func routes() []Route {
 		Route{
 			path: "/",
 			function: func(w http.ResponseWriter, r *http.Request) {
-				json.NewEncoder(w).Encode(models.JSONResponse{Code: "0", Message: "API Service active v1.0.1"})
+				json.NewEncoder(w).Encode(models.JSONResponse{Code: models.StatusOk, Message: "API Service active v0.0.1"})
 			},
 			methods: []string{"GET"},
 		},
 		Route{
 			path:     "/upload",
-			function: handlers.Upload,
+			function: handlers.UploadFile,
 			methods:  []string{"POST"},
 		},
 	}

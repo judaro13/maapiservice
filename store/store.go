@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/sqlite" //for use sqlite at tests
 )
 
 // ConnectToDB func that create a DB connection
