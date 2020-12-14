@@ -2,16 +2,14 @@ package store
 
 import (
 	"time"
-
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
 // GeoCoordinate db struct
 type GeoCoordinate struct {
-	ID        uint
+	ID        uint `gorm:"autoIncrement:true,index"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-	Lat       float64 `gorm:"primaryKey" json:"lat"`
-	Lon       float64 `gorm:"primaryKey" json:"lon"`
+	Lat       float64 `gorm:"not null" json:"lat"`
+	Lon       float64 `gorm:"not null" json:"lon"`
 	Postcode  string  `json:"postcode"`
 }

@@ -1,43 +1,25 @@
-package handlers
+package postcodes
 
 import (
 	"bytes"
-	"encoding/csv"
 	"encoding/json"
 	"errors"
-	"fmt"
-	"io"
 	"io/ioutil"
 	"judaro13/miaguila/models"
+	"judaro13/miaguila/store"
 	"judaro13/miaguila/utils"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/avast/retry-go"
+	"gorm.io/gorm"
 )
 
-// UploadFile func to load csv data
-func UploadFile(write http.ResponseWriter, request *http.Request) {
-
-	reader := csv.NewReader(request.Body)
-	var results [][]string
-	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		}
-		results = append(results, record)
-	}
-
-	go queryData(results)
-	utils.JSONResponse(write, models.JSONResponse{Code: models.StatusOk, Message: "Processing data"})
-}
-
-func queryData(coords [][]string) {
+func queryData(db *gorm.DB, coords [][]string) {
 	chunks := splitInChuncks(coords)
 	for _, chunk := range chunks {
-		queryBulkData(chunk)
+		queryBulkData(db, chunk)
 	}
 }
 
@@ -58,7 +40,7 @@ func splitInChuncks(slice [][]string) [][][]string {
 	return chunks
 }
 
-func queryBulkData(coords [][]string) {
+func queryBulkData(db *gorm.DB, coords [][]string) {
 	query := stringCoordsToQueryStruct(coords)
 
 	body, err := json.Marshal(query)
@@ -112,8 +94,7 @@ func queryBulkData(coords [][]string) {
 		return
 	}
 
-	fmt.Printf("\n %#v ", result)
-
+	store.SaveUKAPIResponse(db, result)
 }
 
 func stringCoordsToQueryStruct(coords [][]string) models.UKAPIBulkQuery {

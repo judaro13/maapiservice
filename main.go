@@ -4,14 +4,14 @@ import (
 	"fmt"
 	"judaro13/miaguila/models"
 	"judaro13/miaguila/router"
+	"judaro13/miaguila/store"
 	"net/http"
 )
 
 func main() {
-	// db := store.ConnectToDB()
-	// defer db.Close()
+	db := store.ConnectToDB()
 
-	context := models.AppContext{DB: nil}
+	context := models.AppContext{DB: db}
 	router := router.NewRouter(&context)
 
 	// server port
