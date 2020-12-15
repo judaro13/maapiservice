@@ -21,7 +21,6 @@ func storeData(context *models.AppContext, coords [][]string, reference string) 
 }
 
 func sendDataToProcess(rabbit *amqp.Connection, coords [][]string, reference string) {
-
 	data := smodels.QueryCoordinatesMessage{Reference: reference, Coordinates: coords}
 	body, err := json.Marshal(data)
 	if err != nil {
