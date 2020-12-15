@@ -31,7 +31,7 @@ func sendDataToProcess(rabbit *amqp.Connection, coords [][]string, reference str
 	ch, err := rabbit.Channel()
 	defer ch.Close()
 
-	q, err := ch.QueueDeclare(os.Getenv("RABBIT_PROCESS_DATA_QUEUE"), false, false, false, false, nil)
+	q, err := ch.QueueDeclare(os.Getenv("RABBIT_QUERY_DATA_QUEUE"), false, false, false, false, nil)
 	utils.Error(err)
 
 	err = ch.Publish("", q.Name, false, false,
